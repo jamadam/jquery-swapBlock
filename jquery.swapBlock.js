@@ -7,6 +7,7 @@
  * $.swapBlock.bind('click', $(".triggers"), $(".blocks"), {...})
  * 
  * history
+ * : 2011-11-17 ver0.12 - Add: bubbling option.
  * : 2011-11-16 ver0.11 - Add: default options to set index of initial selection.
  * : 2011-11-28 ver0.10 - API has changed.
  * : 2011-09-13 ver0.9 - Add: showMethod and hideMethod added.
@@ -41,7 +42,8 @@
 				to_block.fadeIn('fast');
 			});
 		},
-		'default': 0
+		'default': 0,
+		bubbling: false
 	};
 	
 	$[plugname].bind = function(etype, triggers, blocks, params) {
@@ -61,7 +63,7 @@
 					var to_block  	= bs.blocks.eq(idx);
 					var classEnabled = bs.params.className.enabled;
 					if (bs.params.disableCurrent && to_block.hasClass(classEnabled)) {
-						return false;
+						return bs.params['bubbling'];
 					}
 					var current_block = bs.blocks.filter('.' + classEnabled);
 					bs.triggers.removeClass(classEnabled);
@@ -69,7 +71,7 @@
 					to_block.addClass(classEnabled);
 					to_trigger.addClass(classEnabled);
 					bs.params.swapMethod(current_block, to_block);
-					return true;
+					return bs.params['bubbling'];
 				}
 			}(bs, idx));
 		});
